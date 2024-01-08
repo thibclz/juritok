@@ -1,0 +1,14 @@
+[project]
+name = "juritok"
+description = "Tokenization du JORF et des textes consolidés"
+version = "0.1.0"
+authors = [
+    { name = "GAS", email = "georges-andre.silber@minesparis.psl.eu" }
+]
+dependencies = [
+    "sentencepiece",
+]
+
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
