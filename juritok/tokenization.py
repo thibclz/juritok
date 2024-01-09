@@ -29,17 +29,23 @@ def evaluate_model(model, data_path):
     with open(data_path, 'r', encoding='utf-8') as testing_data :
         data = testing_data.read()
         sp = spm.SentencePieceProcessor(model_file=model)
+        t0 = time.time()
         encoded_data = sp.EncodeAsPieces(data.split('\n'))
+        ti = time.time()
+        decoded_data = sp.Decode(encoded_data)
+        tf = time.time()
+
         with open(f"encoded_{model[17:-6]}.txt", 'w', encoding='utf-8') as file:
             file.write("%s\n" % encoded_data)
-        decoded_data = sp.Decode(encoded_data)
         with open(f"decoded_{model[17:-6]}.txt", 'w', encoding='utf-8') as file:
             for item in decoded_data:
-              file.write("%s\n" % item)
-            
-        return sentence_bleu(data.split('\n'), decoded_data)
-    
+                file.write("%s\n" % item)
 
+        # with open(f"decoded_{model[17:-6]}.txt", 'r', encoding='utf-8') as file:
+        #     decoded_data = file.read()
+        
+        return t0, ti, tf 
+    
 
 
 if __name__ == "__main__":
@@ -51,12 +57,10 @@ if __name__ == "__main__":
     # build_dataset(paths_training, "./data/training.txt")
     # build_dataset(paths_testing, "./data/testing.txt")
     
-    # vocab_sizes = [100, 500, 1000, 5000]
-    vocab_sizes = [1000]
+    vocab_sizes = [100, 500, 1000, 5000]
+    # vocab_sizes = [1000]
     # for vocab_size in vocab_sizes :
     #     train_model("./data/training.txt", vocab_size)
     for vocab_size in vocab_sizes :
-        t0 = time.time()
-        bleuscore = evaluate_model(f"./models/juritok_{vocab_size}.model", "./data/testing.txt")
-        tf = time.time()
-        print(f'With vocab size = {vocab_size}, BLEU_score ={bleuscore}, duration = {tf - t0}')
+        t0, ti, tf = evaluate_model(f"./models/juritok_{vocab_size}.model", "./data/testing.txt")
+        print(f'With vocab size = {vocab_size}, encoding duration = {ti - t0}, decoding duration = {tf - ti}')

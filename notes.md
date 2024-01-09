@@ -1,0 +1,7 @@
+- Changer la taille du vocabulaire ne change pas l'encodage décodage
+- La raison est que si on a peu de token dans un vocabulaire, les charactères ascii seront les mots dudit vocabulaire
+- Une taille de vocabulaire bien choisi permet d'accélérer le temps d'encodage et de décodage :
+    - With vocab size = 100, encoding duration = 67.81970977783203, decoding duration = 14.80546498298645
+    - With vocab size = 500, encoding duration = 26.4201602935791, decoding duration = 9.549480199813843
+    - With vocab size = 1000, encoding duration = 23.413511514663696, decoding duration = 9.531898260116577
+    - With vocab size = 5000, encoding duration = 15.823014497756958, decoding duration = 6.350472927093506
